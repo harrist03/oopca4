@@ -16,9 +16,11 @@ public class App {
         try {
             // List all expenses and calc total spent
             List<ExpenseDTO> expenses = expenseDAO.listAllExpenses();
+            System.out.println("All expenses incurred:");
             for (ExpenseDTO expense : expenses) {
-                System.out.println("Expenses: " + expense.toString());
+                System.out.println(expense.toString());
             }
+            System.out.println("Total spent: $" + expenseDAO.totalSpent());
         } catch (DaoException e) {
             System.out.println("Error: " + e.getMessage());
         }

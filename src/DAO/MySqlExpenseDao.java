@@ -20,9 +20,9 @@ public class MySqlExpenseDao extends MySqlDao implements ExpenseDAOInterface {
 
         try {
             conn = this.getConnection();
-            String query = "SELECT * FROM expenses";
+            String selectQuery = "SELECT * FROM expenses";
 
-            ps = conn.prepareStatement(query);
+            ps = conn.prepareStatement(selectQuery);
             rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -54,5 +54,41 @@ public class MySqlExpenseDao extends MySqlDao implements ExpenseDAOInterface {
             }
         }
         return expenses;
+    }
+
+    public double totalSpent() throws DaoException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        double total = 0;
+
+        try {
+            conn = this.getConnection();
+            String totalQuery = "SELECT SUM(amount) FROM expenses";
+
+            ps = conn.prepareStatement(totalQuery);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                total = rs.getDouble(1);
+            }
+        } catch (SQLException e) {
+            throw new DaoException("totalSpent() " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conn != null) {
+                    this.freeConnection(conn);
+                }
+            } catch (SQLException e) {
+                throw new DaoException("totalSpent() " + e.getMessage());
+            }
+        }
+        return total;
     }
 }

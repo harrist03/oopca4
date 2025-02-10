@@ -63,11 +63,11 @@ public class ExpenseDTO {
     @Override
     public String toString() {
         return "ExpenseDTO{" +
-                "expenseID=" + expenseID +
-                ", title='" + title + '\'' +
-                ", category='" + category + '\'' +
-                ", amount=" + amount +
-                ", date='" + dateInccured + '\'' +
+                "expenseID: " + expenseID +
+                ", title: '" + title + '\'' +
+                ", category: '" + category + '\'' +
+                ", amount: " + amount +
+                ", date: '" + dateInccured + '\'' +
                 '}';
     }
 }
