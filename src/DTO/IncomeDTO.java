@@ -4,13 +4,13 @@ public class IncomeDTO {
     private int incomeID;
     private String title;
     private double amount;
-    private String date;
+    private String dateEarned;
 
-    public IncomeDTO(int incomeID, String title, double amount, String date) {
+    public IncomeDTO(int incomeID, String title, double amount, String dateEarned) {
         this.incomeID = incomeID;
         this.title = title;
         this.amount = amount;
-        this.date = date;
+        this.dateEarned = dateEarned;
     }
 
     // non argument constructor
@@ -43,11 +43,11 @@ public class IncomeDTO {
     }
 
     public String getDate() {
-        return date;
+        return dateEarned;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setDate(String dateEarned) {
+        this.dateEarned = dateEarned;
     }
 
     @Override
@@ -56,7 +56,7 @@ public class IncomeDTO {
                 "incomeID=" + incomeID +
                 ", title='" + title + '\'' +
                 ", amount=" + amount +
-                ", date='" + date + '\'' +
+                ", date='" + dateEarned + '\'' +
                 '}';
     }
 }
