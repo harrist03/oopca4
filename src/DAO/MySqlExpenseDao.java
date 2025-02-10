@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+// MySqlDao is a parent class to MySqlExpenseDao
 public class MySqlExpenseDao extends MySqlDao implements ExpenseDAOInterface {
     // List all expenses incurred and calc total spent
     @Override
@@ -70,6 +71,7 @@ public class MySqlExpenseDao extends MySqlDao implements ExpenseDAOInterface {
             rs = ps.executeQuery();
 
             if (rs.next()) {
+                // Get the total amount spent from the first column
                 total = rs.getDouble(1);
             }
         } catch (SQLException e) {
@@ -91,4 +93,39 @@ public class MySqlExpenseDao extends MySqlDao implements ExpenseDAOInterface {
         }
         return total;
     }
+        
+    // Add a new expense
+    @Override
+    public void addExpense(ExpenseDTO expense) throws DaoException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+
+        try {
+            conn = this.getConnection();
+            String insertQuery = "INSERT INTO expenses (title, category, amount, dateIncurred) VALUES (?, ?, ?, ?)";
+
+            ps = conn.prepareStatement(insertQuery);
+            // Set the values of the parameters
+            ps.setString(1, expense.getTitle());
+            ps.setString(2, expense.getCategory());
+            ps.setDouble(3, expense.getAmount());
+            ps.setString(4, expense.getDate());
+            // Execute the query
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException("addExpense() " + e.getMessage());
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conn != null) {
+                    this.freeConnection(conn);
+                }
+            } catch (SQLException e) {
+                throw new DaoException("addExpense() " + e.getMessage());
+            }
+        }
+    }
+
 }

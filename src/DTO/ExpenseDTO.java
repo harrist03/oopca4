@@ -7,8 +7,8 @@ public class ExpenseDTO {
     private double amount;
     private String dateInccured;
 
-    public ExpenseDTO(int expenseID, String title, String category, double amount, String dateInccured) {
-        this.expenseID = expenseID;
+    public ExpenseDTO(String title, String category, double amount, String dateInccured) {
+        // expenseID is not included in the constructor as it is auto-incremented in the database
         this.title = title;
         this.category = category;
         this.amount = amount;
