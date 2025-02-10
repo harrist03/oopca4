@@ -1,4 +1,8 @@
-import java.sql.*;
+import DAO.MySqlExpenseDao;
+import DTO.ExpenseDTO;
+import Exceptions.DaoException;
+import java.util.List;
+import DAO.ExpenseDAOInterface;
 
 public class App {
     public static void main(String[] args) {
@@ -7,18 +11,16 @@ public class App {
     }
 
     public void start() {
-        String url = "jdbc:mysql://localhost/";
-        String dbName = "oopca4";
-        String userName = "harris";
-        String password = "harris12345";
+        ExpenseDAOInterface expenseDAO = new MySqlExpenseDao();
 
-        try (Connection conn = DriverManager.getConnection(url + dbName, userName, password)) {
-            System.out.println("Connected to database");
-
-        } catch (SQLException ex) {
-            System.out.println(
-                    "Failed to connect to database - check that you have started the MySQL from XAMPP, and that your connection details are correct.");
-            ex.printStackTrace();
+        try {
+            // List all expenses and calc total spent
+            List<ExpenseDTO> expenses = expenseDAO.listAllExpenses();
+            for (ExpenseDTO expense : expenses) {
+                System.out.println("Expenses: " + expense.toString());
+            }
+        } catch (DaoException e) {
+            System.out.println("Error: " + e.getMessage());
         }
     }
 }

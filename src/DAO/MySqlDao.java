@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import Exceptions.DaoException;
 
+// All DAO classes will extend this class to avoid code repetition
+
 public class MySqlDao {
     public Connection getConnection() throws DaoException {
         String driver = "com.mysql.cj.jdbc.Driver";
