@@ -93,7 +93,7 @@ public class MySqlExpenseDao extends MySqlDao implements ExpenseDAOInterface {
         }
         return total;
     }
-        
+
     // Add a new expense
     @Override
     public void addExpense(ExpenseDTO expense) throws DaoException {
@@ -114,6 +114,41 @@ public class MySqlExpenseDao extends MySqlDao implements ExpenseDAOInterface {
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException("addExpense() " + e.getMessage());
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conn != null) {
+                    this.freeConnection(conn);
+                }
+            } catch (SQLException e) {
+                throw new DaoException("addExpense() " + e.getMessage());
+            }
+        }
+    }
+
+    // Delete an expense
+    @Override
+    public void deleteExpense(int expenseID) throws DaoException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+
+        try {
+            conn = this.getConnection();
+            String deleteQuery = "DELETE FROM expenses WHERE expenseID = ?";
+
+            ps = conn.prepareStatement(deleteQuery);
+            ps.setInt(1, expenseID);
+
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Deletion is successful!");
+            } else {
+                System.out.println("Invalid expense ID!");
+            }
+        } catch (SQLException e) {
+            throw new DaoException("deleteExpense() " + e.getMessage());
         } finally {
             try {
                 if (ps != null) {
