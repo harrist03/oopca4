@@ -23,6 +23,7 @@ public class App {
             System.out.println("3. Add a new expense");
             System.out.println("4. Delete an expense");
             System.out.println("5. List all income");
+            System.out.println("6. Total earned in income");
             System.out.println("8. Exit");
             choice = sc.nextInt();
 
@@ -36,6 +37,8 @@ public class App {
                 deleteExpense(sc);
             } else if (choice == 5) {
                 listAllIncome(sc);
+            } else if (choice == 6) {
+                calcTotalIncome();
             } else if (choice == 8) {
                 System.out.println("Goodbye!");
             }
@@ -58,7 +61,7 @@ public class App {
 
     // 2. Calculate total expenses
     public static void calcTotalExpenses() throws DaoException {
-        System.out.println("Total spent: $" + expenseDAO.totalSpent());
+        System.out.println("Total spent: $" + expenseDAO.calcTotalExpenses());
     }
 
     // 3. Add a new expense
@@ -94,5 +97,10 @@ public class App {
         for (IncomeDTO income : incomeList) {
             System.out.println(income.toString());
         }
+    }
+
+    // 6. Calculate total income
+    public static void calcTotalIncome() throws DaoException {
+        System.out.println("Total earned: $" + incomeDAO.calcTotalIncome());
     }
 }

@@ -55,5 +55,43 @@ public class MySqlIncomeDao extends MySqlDao implements IncomeDAOInterface {
         }
         return incomeList;
     }
+
+    // Calculate total amount earned
+    @Override
+    public double calcTotalIncome() throws DaoException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        double totalIncome = 0;
+
+        try {
+            conn = this.getConnection();
+            String selectQuery = "SELECT SUM(amount) FROM income";
+
+            ps = conn.prepareStatement(selectQuery);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                totalIncome = rs.getDouble(1);
+            }
+        } catch (SQLException e) {
+            throw new DaoException("calcTotalIncome() " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conn != null) {
+                    this.freeConnection(conn);
+                }
+            } catch (SQLException e) {
+                throw new DaoException("calcTotalIncome() " + e.getMessage());
+            }
+        }
+        return totalIncome;
+    }
     
 }

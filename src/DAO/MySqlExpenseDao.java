@@ -58,7 +58,7 @@ public class MySqlExpenseDao extends MySqlDao implements ExpenseDAOInterface {
     }
 
     // Calculate total amount spent
-    public double totalSpent() throws DaoException {
+    public double calcTotalExpenses() throws DaoException {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
