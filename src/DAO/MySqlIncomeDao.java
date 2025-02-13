@@ -124,5 +124,40 @@ public class MySqlIncomeDao extends MySqlDao implements IncomeDAOInterface {
             }
         }
     }
-    
+
+    // Delete an income
+    @Override
+    public void deleteIncome(int incomeID) throws DaoException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+
+        try {
+            conn = this.getConnection();
+            String deleteQuery = "DELETE FROM income WHERE incomeID = ?";
+
+            ps = conn.prepareStatement(deleteQuery);
+            ps.setInt(1, incomeID);
+
+            int rowsAffected = ps.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Deletion is successful!");
+            } else {
+                System.out.println("Invalid Income ID!");
+            }
+        } catch (SQLException e) {
+            throw new DaoException("deleteIncome()" + e.getMessage());
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conn != null) {
+                    this.freeConnection(conn);
+                }
+            } catch (SQLException e) {
+                throw new DaoException("deleteIncome() " + e.getMessage());
+            }
+        }
+    }
 }

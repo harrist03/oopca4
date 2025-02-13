@@ -25,7 +25,8 @@ public class App {
             System.out.println("5. List all income");
             System.out.println("6. Total earned in income");
             System.out.println("7. Add a new income");
-            System.out.println("8. Exit");
+            System.out.println("8. Delete an income");
+            System.out.println("10. Exit");
             choice = sc.nextInt();
 
             if (choice == 1) {
@@ -37,15 +38,17 @@ public class App {
             } else if (choice == 4) {
                 deleteExpense(sc);
             } else if (choice == 5) {
-                listAllIncome(sc);
+                listAllIncome();
             } else if (choice == 6) {
                 calcTotalIncome();
             } else if (choice == 7) {
                 addNewIncome(sc);
-            }else if (choice == 8) {
+            } else if (choice == 8) {
+                deleteIncome(sc);
+            } else if (choice == 10) {
                 System.out.println("Goodbye!");
             }
-            if (choice <= 0 || choice > 8) {
+            if (choice <= 0 || choice > 10) {
                 System.out.println("Invalid input! Try again!");
             }
         } while (choice != 8);
@@ -94,7 +97,7 @@ public class App {
     }
 
     // 5. List all income
-    public static void listAllIncome(Scanner sc) throws DaoException {
+    public static void listAllIncome() throws DaoException {
         List<IncomeDTO> incomeList = incomeDAO.listAllIncome();
         System.out.println("All income earned:");
         for (IncomeDTO income : incomeList) {
@@ -121,5 +124,13 @@ public class App {
         IncomeDTO newIncome = new IncomeDTO(title, amount, date);
         incomeDAO.addNewIncome(newIncome);
         System.out.println("New income added successfully.");
+    }
+
+    // 8. Delete an income
+    public static void deleteIncome(Scanner sc) throws DaoException {
+        listAllIncome();
+        System.out.println("Enter Income ID to be deleted: ");
+        int incomeID = sc.nextInt();
+        incomeDAO.deleteIncome(incomeID);
     }
 }

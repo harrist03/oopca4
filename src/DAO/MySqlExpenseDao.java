@@ -159,7 +159,7 @@ public class MySqlExpenseDao extends MySqlDao implements ExpenseDAOInterface {
                     this.freeConnection(conn);
                 }
             } catch (SQLException e) {
-                throw new DaoException("addExpense() " + e.getMessage());
+                throw new DaoException("deleteExpense() " + e.getMessage());
             }
         }
     }
