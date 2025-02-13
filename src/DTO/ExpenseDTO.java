@@ -62,12 +62,6 @@ public class ExpenseDTO {
 
     @Override
     public String toString() {
-        return "[" +
-                "expenseID: " + expenseID +
-                ", title: '" + title + '\'' +
-                ", category: '" + category + '\'' +
-                ", amount: " + amount +
-                ", date: '" + dateInccured + '\'' +
-                ']';
+        return String.format("%-10d | %-20s | %-20s| %-10.2f | %-10s ", expenseID, category, title, amount, dateInccured);
     }
 }

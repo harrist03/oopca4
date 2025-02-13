@@ -6,8 +6,9 @@ public class IncomeDTO {
     private double amount;
     private String dateEarned;
 
-    public IncomeDTO (String title, double amount, String dateEarned) {
-        // incomeID is not included in the constructor as it is auto-incremented in the database
+    public IncomeDTO(String title, double amount, String dateEarned) {
+        // incomeID is not included in the constructor as it is auto-incremented in the
+        // database
         this.title = title;
         this.amount = amount;
         this.dateEarned = dateEarned;
@@ -52,11 +53,6 @@ public class IncomeDTO {
 
     @Override
     public String toString() {
-        return "[" +
-                "incomeID: " + incomeID +
-                ", title: '" + title + '\'' +
-                ", amount: " + amount +
-                ", date: '" + dateEarned + '\'' +
-                ']';
+        return String.format("%-10d | %-20s | %-10.2f | %-10s", incomeID, title, amount, dateEarned);
     }
 }

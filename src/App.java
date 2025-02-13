@@ -18,14 +18,14 @@ public class App {
         int choice = 0;
         Scanner sc = new Scanner(System.in);
         do {
-            System.out.println("\n1. List all expenses");
-            System.out.println("2. Total spent in expenses");
-            System.out.println("3. Add a new expense");
-            System.out.println("4. Delete an expense");
-            System.out.println("5. List all income");
-            System.out.println("6. Total earned in income");
-            System.out.println("7. Add a new income");
-            System.out.println("8. Delete an income");
+            System.out.println("\n1.  List all expenses");
+            System.out.println("2.  Total spent in expenses");
+            System.out.println("3.  Add a new expense");
+            System.out.println("4.  Delete an expense");
+            System.out.println("5.  List all income");
+            System.out.println("6.  Total earned in income");
+            System.out.println("7.  Add a new income");
+            System.out.println("8.  Delete an income");
             System.out.println("10. Exit");
             choice = sc.nextInt();
 
@@ -51,7 +51,7 @@ public class App {
             if (choice <= 0 || choice > 10) {
                 System.out.println("Invalid input! Try again!");
             }
-        } while (choice != 8);
+        } while (choice != 10);
 
         sc.close();
     }
@@ -59,7 +59,7 @@ public class App {
     // 1. List all expenses
     public static void listAllExpenses() throws DaoException {
         List<ExpenseDTO> expenses = expenseDAO.listAllExpenses();
-        System.out.println("All expenses incurred:");
+        System.out.println(String.format("%-10s | %-20s | %-20s| %-10s | %-10s", "ExpenseID", "Title", "Category", "Amount", "Date Incurred"));
         for (ExpenseDTO expense : expenses) {
             System.out.println(expense.toString());
         }
@@ -99,7 +99,7 @@ public class App {
     // 5. List all income
     public static void listAllIncome() throws DaoException {
         List<IncomeDTO> incomeList = incomeDAO.listAllIncome();
-        System.out.println("All income earned:");
+        System.out.println(String.format("%-10s | %-20s | %-10s | %-10s", "IncomeID", "Title", "Amount", "Date Earned"));
         for (IncomeDTO income : incomeList) {
             System.out.println(income.toString());
         }
