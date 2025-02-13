@@ -11,7 +11,7 @@ import java.util.List;
 
 // MySqlDao is a parent class to MySqlExpenseDao
 public class MySqlExpenseDao extends MySqlDao implements ExpenseDAOInterface {
-    // List all expenses incurred and calc total spent
+    // List all expenses incurred
     @Override
     public List<ExpenseDTO> listAllExpenses() throws DaoException {
         Connection conn = null;
@@ -57,6 +57,7 @@ public class MySqlExpenseDao extends MySqlDao implements ExpenseDAOInterface {
         return expenses;
     }
 
+    // Calculate total amount spent
     public double totalSpent() throws DaoException {
         Connection conn = null;
         PreparedStatement ps = null;
@@ -162,5 +163,5 @@ public class MySqlExpenseDao extends MySqlDao implements ExpenseDAOInterface {
             }
         }
     }
-
+    
 }

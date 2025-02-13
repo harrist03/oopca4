@@ -52,11 +52,11 @@ public class IncomeDTO {
 
     @Override
     public String toString() {
-        return "IncomeDTO{" +
+        return "[" +
                 "incomeID: " + incomeID +
                 ", title: '" + title + '\'' +
                 ", amount: " + amount +
                 ", date: '" + dateEarned + '\'' +
-                '}';
+                ']';
     }
 }

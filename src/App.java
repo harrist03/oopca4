@@ -1,13 +1,18 @@
 import DAO.MySqlExpenseDao;
+import DAO.MySqlIncomeDao;
 import DTO.ExpenseDTO;
+import DTO.IncomeDTO;
 import Exceptions.DaoException;
 import java.util.List;
 import java.util.Scanner;
 
 import DAO.ExpenseDAOInterface;
+import DAO.IncomeDAOInterface;
 
 public class App {
+    // Create DAO objects
     public static ExpenseDAOInterface expenseDAO = new MySqlExpenseDao();
+    public static IncomeDAOInterface incomeDAO = new MySqlIncomeDao();
 
     public static void main(String[] args) throws DaoException {
         int choice = 0;
@@ -17,6 +22,7 @@ public class App {
             System.out.println("2. Total spent in expenses");
             System.out.println("3. Add a new expense");
             System.out.println("4. Delete an expense");
+            System.out.println("5. List all income");
             System.out.println("8. Exit");
             choice = sc.nextInt();
 
@@ -28,6 +34,8 @@ public class App {
                 addNewExpense(sc);
             } else if (choice == 4) {
                 deleteExpense(sc);
+            } else if (choice == 5) {
+                listAllIncome(sc);
             } else if (choice == 8) {
                 System.out.println("Goodbye!");
             }
@@ -77,5 +85,14 @@ public class App {
         System.out.println("Enter expense ID to be deleted: ");
         int expenseID = sc.nextInt();
         expenseDAO.deleteExpense(expenseID);
+    }
+
+    // 5. List all income
+    public static void listAllIncome(Scanner sc) throws DaoException {
+        List<IncomeDTO> incomeList = incomeDAO.listAllIncome();
+        System.out.println("All income earned:");
+        for (IncomeDTO income : incomeList) {
+            System.out.println(income.toString());
+        }
     }
 }
