@@ -6,8 +6,8 @@ public class IncomeDTO {
     private double amount;
     private String dateEarned;
 
-    public IncomeDTO(int incomeID, String title, double amount, String dateEarned) {
-        this.incomeID = incomeID;
+    public IncomeDTO (String title, double amount, String dateEarned) {
+        // incomeID is not included in the constructor as it is auto-incremented in the database
         this.title = title;
         this.amount = amount;
         this.dateEarned = dateEarned;
@@ -42,7 +42,7 @@ public class IncomeDTO {
         this.amount = amount;
     }
 
-    public String getDate() {
+    public String getDateEarned() {
         return dateEarned;
     }
 

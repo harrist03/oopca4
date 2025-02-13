@@ -93,5 +93,36 @@ public class MySqlIncomeDao extends MySqlDao implements IncomeDAOInterface {
         }
         return totalIncome;
     }
+
+    // Add a new income
+    @Override
+    public void addNewIncome(IncomeDTO income) throws DaoException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+
+        try {
+            conn = this.getConnection();
+            String insertQuery = "INSERT INTO income (title, amount, dateEarned) VALUES (?, ?, ?)";
+
+            ps = conn.prepareStatement(insertQuery);
+            ps.setString(1, income.getTitle());
+            ps.setDouble(2, income.getAmount());
+            ps.setString(3, income.getDateEarned());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException("addNewIncome() " + e.getMessage());
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conn != null) {
+                    this.freeConnection(conn);
+                }
+            } catch (SQLException e) {
+                throw new DaoException("addNewIncome() " + e.getMessage());
+            }
+        }
+    }
     
 }

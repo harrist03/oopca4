@@ -24,6 +24,7 @@ public class App {
             System.out.println("4. Delete an expense");
             System.out.println("5. List all income");
             System.out.println("6. Total earned in income");
+            System.out.println("7. Add a new income");
             System.out.println("8. Exit");
             choice = sc.nextInt();
 
@@ -39,7 +40,9 @@ public class App {
                 listAllIncome(sc);
             } else if (choice == 6) {
                 calcTotalIncome();
-            } else if (choice == 8) {
+            } else if (choice == 7) {
+                addNewIncome(sc);
+            }else if (choice == 8) {
                 System.out.println("Goodbye!");
             }
             if (choice <= 0 || choice > 8) {
@@ -102,5 +105,21 @@ public class App {
     // 6. Calculate total income
     public static void calcTotalIncome() throws DaoException {
         System.out.println("Total earned: $" + incomeDAO.calcTotalIncome());
+    }
+
+    // 7. Add a new income
+    public static void addNewIncome(Scanner sc) throws DaoException {
+        sc.nextLine();
+        // Prompt user for new income details
+        System.out.println("Enter title of new income: ");
+        String title = sc.nextLine();
+        System.out.println("Enter amount of new income ($): ");
+        double amount = sc.nextDouble();
+        System.out.println("Enter date of new income (yyyy-mm-dd): ");
+        String date = sc.next();
+
+        IncomeDTO newIncome = new IncomeDTO(title, amount, date);
+        incomeDAO.addNewIncome(newIncome);
+        System.out.println("New income added successfully.");
     }
 }
