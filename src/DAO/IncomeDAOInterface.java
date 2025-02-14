@@ -9,4 +9,6 @@ public interface IncomeDAOInterface {
     public double calcTotalIncome() throws DaoException;
     public void addNewIncome(IncomeDTO income) throws DaoException;
     public void deleteIncome(int incomeID) throws DaoException;
+    public List<IncomeDTO> listIncomeByMonth(int month) throws DaoException;
+    public double calcTotalIncomeByMonth(int month) throws DaoException;
 }

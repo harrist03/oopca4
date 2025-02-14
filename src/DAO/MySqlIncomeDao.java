@@ -1,5 +1,6 @@
 package DAO;
 
+import DTO.ExpenseDTO;
 import DTO.IncomeDTO;
 import Exceptions.DaoException;
 import java.sql.Connection;
@@ -32,7 +33,7 @@ public class MySqlIncomeDao extends MySqlDao implements IncomeDAOInterface {
                 income.setIncomeID(rs.getInt("incomeID"));
                 income.setTitle(rs.getString("title"));
                 income.setAmount(rs.getDouble("amount"));
-                income.setDate(rs.getString("dateEarned"));
+                income.setDateEarned(rs.getString("dateEarned"));
                 // Add the IncomeDTO object to the list
                 incomeList.add(income);
             }
@@ -56,7 +57,7 @@ public class MySqlIncomeDao extends MySqlDao implements IncomeDAOInterface {
         return incomeList;
     }
 
-    // Calculate total amount earned
+    // calc total amount earned
     @Override
     public double calcTotalIncome() throws DaoException {
         Connection conn = null;
@@ -159,5 +160,88 @@ public class MySqlIncomeDao extends MySqlDao implements IncomeDAOInterface {
                 throw new DaoException("deleteIncome() " + e.getMessage());
             }
         }
+    }
+
+    // list income by month
+    public List<IncomeDTO> listIncomeByMonth(int month) throws DaoException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<IncomeDTO> incomeList = new ArrayList<>();
+
+        try {
+            conn = this.getConnection();
+            String selectQuery = "SELECT * FROM income WHERE MONTH(dateEarned) = ?";
+            ps = conn.prepareStatement(selectQuery);
+            ps.setInt(1, month);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                // Create a new IncomeDTO object for each record
+                IncomeDTO income = new IncomeDTO();
+                income.setIncomeID(rs.getInt("incomeID"));
+                income.setTitle(rs.getString("title"));
+                income.setAmount(rs.getDouble("amount"));
+                income.setDateEarned(rs.getString("dateEarned"));
+                // Add the incomeDTO object to the list
+                incomeList.add(income);
+            }
+        } catch (SQLException e) {
+            throw new DaoException("findIncomeByMonth()" + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conn != null) {
+                    this.freeConnection(conn);
+                }
+            } catch (SQLException e) {
+                throw new DaoException("findIncomeByMonth() " + e.getMessage());
+            }
+        }
+
+        return incomeList;
+    }
+
+    // calc total income by month
+    public double calcTotalIncomeByMonth(int month) throws DaoException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        double totalIncome = 0;
+
+        try {
+            conn = this.getConnection();
+            String sumQuery = "SELECT SUM(amount) FROM income WHERE MONTH(dateEarned) = ?";
+            ps = conn.prepareStatement(sumQuery);
+            ps.setInt(1, month);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                totalIncome = rs.getDouble(1);
+            }
+        } catch (SQLException e) {
+            throw new DaoException("calcTotalIncomeByMonth() " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conn != null) {
+                    this.freeConnection(conn);
+                }
+            } catch (SQLException e) {
+                throw new DaoException("calcTotalIncomeByMonth() " + e.getMessage());
+            }
+        }
+
+        return totalIncome;
     }
 }

@@ -1,6 +1,7 @@
 package DAO;
 
 import DTO.ExpenseDTO;
+import DTO.IncomeDTO;
 import Exceptions.DaoException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -33,7 +34,7 @@ public class MySqlExpenseDao extends MySqlDao implements ExpenseDAOInterface {
                 expense.setTitle(rs.getString("title"));
                 expense.setCategory(rs.getString("category"));
                 expense.setAmount(rs.getDouble("amount"));
-                expense.setDate(rs.getString("dateIncurred"));
+                expense.setDateIncurred(rs.getString("dateIncurred"));
                 // Add the ExpenseDTO object to the list
                 expenses.add(expense);
             }
@@ -163,5 +164,90 @@ public class MySqlExpenseDao extends MySqlDao implements ExpenseDAOInterface {
             }
         }
     }
-    
+
+    // find expense by month
+    public List<ExpenseDTO> listExpenseByMonth(int month) throws DaoException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<ExpenseDTO> expenseList = new ArrayList<>();
+
+        try {
+            conn = this.getConnection();
+            String selectQuery = "SELECT * FROM expenses WHERE MONTH(dateIncurred) = ?";
+
+            ps = conn.prepareStatement(selectQuery);
+            ps.setInt(1, month);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                // Create a new IncomeDTO object for each record
+                ExpenseDTO expense = new ExpenseDTO();
+                expense.setExpenseID(rs.getInt("expenseID"));
+                expense.setCategory(rs.getString("category"));
+                expense.setTitle(rs.getString("title"));
+                expense.setAmount(rs.getDouble("amount"));
+                expense.setDateIncurred(rs.getString("dateIncurred"));
+                // Add the incomeDTO object to the list
+                expenseList.add(expense);
+            }
+        } catch (SQLException e) {
+            throw new DaoException("findExpenseByMonth()" + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conn != null) {
+                    this.freeConnection(conn);
+                }
+            } catch (SQLException e) {
+                throw new DaoException("findExpenseByMonth() " + e.getMessage());
+            }
+        }
+
+        return expenseList;
+    }
+
+    // calc total expenses by month
+    public double calcTotalExpensesByMonth(int month) throws DaoException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        double total = 0;
+
+        try {
+            conn = this.getConnection();
+            String totalQuery = "SELECT SUM(amount) FROM expenses WHERE MONTH(dateIncurred) = ?";
+
+            ps = conn.prepareStatement(totalQuery);
+            ps.setInt(1, month);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                // Get the total amount spent from the first column
+                total = rs.getDouble(1);
+            }
+        } catch (SQLException e) {
+            throw new DaoException("calcTotalExpensesByMonth() " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conn != null) {
+                    this.freeConnection(conn);
+                }
+            } catch (SQLException e) {
+                throw new DaoException("calcTotalExpensesByMonth() " + e.getMessage());
+            }
+        }
+        return total;
+    }
 }

@@ -26,6 +26,7 @@ public class App {
             System.out.println("6.  Total earned in income");
             System.out.println("7.  Add a new income");
             System.out.println("8.  Delete an income");
+            System.out.println("9.  Net income for a particular month");
             System.out.println("10. Exit");
             choice = sc.nextInt();
 
@@ -45,6 +46,8 @@ public class App {
                 addNewIncome(sc);
             } else if (choice == 8) {
                 deleteIncome(sc);
+            } else if (choice == 9) {
+                listNetIncomeByMonth(sc);
             } else if (choice == 10) {
                 System.out.println("Goodbye!");
             }
@@ -59,7 +62,8 @@ public class App {
     // 1. List all expenses
     public static void listAllExpenses() throws DaoException {
         List<ExpenseDTO> expenses = expenseDAO.listAllExpenses();
-        System.out.println(String.format("%-10s | %-20s | %-20s| %-10s | %-10s", "ExpenseID", "Title", "Category", "Amount", "Date Incurred"));
+        System.out.println(String.format("%-10s | %-20s | %-20s| %-10s | %-10s", "ExpenseID", "Title", "Category",
+                "Amount", "Date Incurred"));
         for (ExpenseDTO expense : expenses) {
             System.out.println(expense.toString());
         }
@@ -99,7 +103,8 @@ public class App {
     // 5. List all income
     public static void listAllIncome() throws DaoException {
         List<IncomeDTO> incomeList = incomeDAO.listAllIncome();
-        System.out.println(String.format("%-10s | %-20s | %-10s | %-10s", "IncomeID", "Title", "Amount", "Date Earned"));
+        System.out
+                .println(String.format("%-10s | %-20s | %-10s | %-10s", "IncomeID", "Title", "Amount", "Date Earned"));
         for (IncomeDTO income : incomeList) {
             System.out.println(income.toString());
         }
@@ -132,5 +137,33 @@ public class App {
         System.out.println("Enter Income ID to be deleted: ");
         int incomeID = sc.nextInt();
         incomeDAO.deleteIncome(incomeID);
+    }
+
+    // 9. List income and expenses given a particular month and display the total
+    // income, expenses, and how much is left over.
+    public static void listNetIncomeByMonth(Scanner sc) throws DaoException {
+        System.out.println("Enter month(1-12): ");
+        int month = sc.nextInt();
+
+        System.out.println(String.format("%-10s | %-20s | %-20s| %-10s | %-10s", "ExpenseID", "Title", "Category",
+                "Amount", "Date Incurred"));
+        List<ExpenseDTO> expenseList = expenseDAO.listExpenseByMonth(month);
+        for (ExpenseDTO expense : expenseList) {
+            System.out.println(expense.toString());
+        }
+
+        System.out.println();
+
+        System.out.println(String.format("%-10s | %-20s | %-10s | %-10s", "IncomeID",
+                "Title", "Amount", "Date Earned"));
+        List<IncomeDTO> incomeList = incomeDAO.listIncomeByMonth(month);
+        for (IncomeDTO income : incomeList) {
+            System.out.println(income.toString());
+        }
+        System.out.println();
+
+        // total sum of income by month - total sum of expenses by month
+        double leftOver = incomeDAO.calcTotalIncomeByMonth(month) - expenseDAO.calcTotalExpensesByMonth(month);
+        System.out.println("Net Income: $" + leftOver);
     }
 }

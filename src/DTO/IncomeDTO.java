@@ -47,7 +47,7 @@ public class IncomeDTO {
         return dateEarned;
     }
 
-    public void setDate(String dateEarned) {
+    public void setDateEarned(String dateEarned) {
         this.dateEarned = dateEarned;
     }
 

@@ -56,7 +56,7 @@ public class ExpenseDTO {
         return dateInccured;
     }
 
-    public void setDate(String dateInccured) {
+    public void setDateIncurred(String dateInccured) {
         this.dateInccured = dateInccured;
     }
 
