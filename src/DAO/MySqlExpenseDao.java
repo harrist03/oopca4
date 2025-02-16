@@ -1,7 +1,6 @@
 package DAO;
 
 import DTO.ExpenseDTO;
-import DTO.IncomeDTO;
 import Exceptions.DaoException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
